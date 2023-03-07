@@ -3,6 +3,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import java.net.Socket;
 
 import static org.mockito.Mockito.*;
@@ -35,14 +39,38 @@ public class ServerTest {
    @Test
     public void testCounter(){
         //arrange
-        ClientHandler clientHandler1 = new ClientHandler(mock(Socket.class), new Server());
-       ClientHandler clientHandler2 = new ClientHandler(mock(Socket.class), new Server());
+        
+       new ClientHandler(mock(Socket.class), new Server());
+       new ClientHandler(mock(Socket.class), new Server());
        int expected = 2;
        //act
        int count = ClientHandler.getCountClients();
        //assert
        Assertions.assertEquals(expected, count);
    }
+   @Test
+   public void testRun1() throws IOException {
+       //arrange
+       Server server = mock(Server.class);
+       Socket socket = mock(Socket.class);
+       ClientHandler clientHandler = new ClientHandler(socket, server);
+       ByteArrayOutputStream out = new ByteArrayOutputStream();
+       ByteArrayInputStream in = new ByteArrayInputStream("Сабир\n/exit".getBytes());
+
+      when(socket.getOutputStream()).thenReturn(out);
+      when(socket.getInputStream()).thenReturn(in);
+      in.close();
+
+      //act
+      clientHandler.run();
+
+      //assert
+      Assertions.assertEquals(out.toString(), """
+              You are welcome Сабир!
+              Now you are 1!
+              Bye-bye, Сабир!
+              """);
+  }
 
 }
 

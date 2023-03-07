@@ -57,6 +57,15 @@ public class ClientTest {
         }
         Assertions.assertTrue(builder.toString().contains(message));
     }
+    @Test
+    public void testLogIn(){
+        //arrange
+        Client client = new Client();
+        //act
+         client.logIn();
+         //assert
+         Assertions.assertDoesNotThrow(client::logIn);
+    }
 }
 
 
