@@ -1,6 +1,9 @@
-import Client.Client;
+import Client.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import java.io.*;
+import java.net.Socket;
+import static org.mockito.Mockito.*;
 
 import java.io.*;
 public class ClientTest {
@@ -65,6 +68,25 @@ public class ClientTest {
          client.logIn();
          //assert
          Assertions.assertDoesNotThrow(client::logIn);
+    }
+
+    @Test
+    public void testClient() throws IOException {
+        //arrange
+        Socket socket = mock(Socket.class);
+        Client client = mock(Client.class);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayInputStream in = new ByteArrayInputStream("Сабир\n/exit".getBytes());
+        
+        when(socket.getOutputStream()).thenReturn(out);
+        when(socket.getInputStream()).thenReturn(in);
+        doNothing().when(client).setUserName("Сабир");
+
+        WriterClient writerClient = new WriterClient(socket, client);
+
+        //assert
+        Assertions.assertDoesNotThrow(writerClient::start);
+
     }
 }
 
