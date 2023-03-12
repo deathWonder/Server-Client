@@ -1,11 +1,20 @@
-import Client.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.Socket;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.io.*;
-import java.net.Socket;
-import static org.mockito.Mockito.*;
 
-import java.io.*;
+import Client.Client;
+import Client.WriterClient;
 public class ClientTest {
 
     @Test
